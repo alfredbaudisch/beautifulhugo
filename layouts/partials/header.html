@@ -4,16 +4,19 @@
   {{ if .Site.Params.homeTitle }}{{ $.Scratch.Set "title" .Site.Params.homeTitle }}{{ else }}{{ $.Scratch.Set "title" .Site.Title }}{{ end }}
   {{ if .Site.Params.subtitle }}{{ $.Scratch.Set "subtitle" .Site.Params.subtitle }}{{ end }}
   {{ if .Site.Params.bigimg }}{{ $.Scratch.Set "bigimg" .Site.Params.bigimg }}{{ end }}
+  {{ if .Site.Params.bigimgCss }}{{ $.Scratch.Set "bigimgCss" .Site.Params.bigimgCss }}{{ end }}
 {{ else }}
   {{ $.Scratch.Set "title" .Title }}
   {{ if .Params.subtitle }}{{ $.Scratch.Set "subtitle" .Params.subtitle }}{{ end }}
   {{ if .Params.bigimg }}{{ $.Scratch.Set "bigimg" .Params.bigimg }}{{ end }}
+  {{ if .Params.bigimgCss }}{{ $.Scratch.Set "bigimgCss" .Params.bigimgCss }}{{ end }}
 {{ end }}
 {{ $bigimg := $.Scratch.Get "bigimg" }}
+{{ $bigimgCss := $.Scratch.Get "bigimgCss" }}
 {{ $title := $.Scratch.Get "title" }}
 {{ $subtitle := $.Scratch.Get "subtitle" }}
 
-{{ if or $bigimg $title }}
+{{ if or $bigimg $bigimgCss $title }}
   {{ if $bigimg }}
     <div id="header-big-imgs" data-num-img={{len $bigimg}} 
       {{range $i, $img := $bigimg}}
@@ -26,9 +29,9 @@
       {{end}}></div>
   {{ end }}
 
-  <header class="header-section {{ if $bigimg }}has-img{{ end }}">
-    {{ if $bigimg }}
-      <div class="intro-header big-img">
+  <header class="header-section {{ if or $bigimg $bigimgCss }}has-img{{ end }}">
+    {{ if or $bigimg $bigimgCss }}
+      <div class="intro-header big-img {{ if $bigimgCss }}{{ $bigimgCss }}{{ end }}">
         {{ $subtitle := $.Scratch.Get "subtitle" }}
         <div class="container">
           <div class="row">
